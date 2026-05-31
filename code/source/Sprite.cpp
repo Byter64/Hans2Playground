@@ -9,7 +9,7 @@ namespace Halib::Data
 		this->image75 = image75;
 		this->frameCount = frameCount;
 		activeFrame = Vec2(0);
-		scale = 1;
+		SetScale(-1);
 
 		frameSize = image->size / frameCount;
 		imageOffset = Vec2(0);
@@ -46,6 +46,12 @@ namespace Halib::Data
 		imageOffset = activeFrame * frameSize;
 	}
 
+	void Sprite::SetActiveFrame(Vec2 frame)
+	{
+		activeFrame = frame;
+		imageOffset = activeFrame * frameSize;
+	}
+
 	short Sprite::GetScale()
 	{
 		return scale;
@@ -54,6 +60,11 @@ namespace Halib::Data
 	Vec2 Sprite::GetScaledFrameSize()
 	{
 		return scaledFrameSize;
+	}
+
+	Vec2 Sprite::GetFrameCount()
+	{
+		return frameCount;
 	}
 
 	void Sprite::IncrementAnimation(short amount)
@@ -65,6 +76,7 @@ namespace Halib::Data
 
 	void Sprite::SetAnimation(short animationIndex, short animationLength)
 	{
+		activeFrame.x = 0;
 		activeFrame.y = animationIndex;
 		imageOffset.y = animationIndex * frameSize.y;
 		this->animationLength = animationLength;

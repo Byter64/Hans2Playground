@@ -74,6 +74,7 @@ target_sources(${FINAL_TARGET} PUBLIC
   "source/Sprite.cpp"
   "source/Vec2.cpp"
   "source/Camera.cpp"
+  "source/LevelManager.cpp"
 
   "source/bmpread.c"
 

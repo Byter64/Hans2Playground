@@ -38,8 +38,10 @@ namespace Halib::Data
 		Sprite(std::shared_ptr<Image> image, std::shared_ptr<Image> image75, Vec2 frameCount);
 
 		void SetScale(short scale);
+		void SetActiveFrame(Vec2 frame);
 		short GetScale();
 		Vec2 GetScaledFrameSize();
+		Vec2 GetFrameCount();
 
 		void IncrementAnimation(short amount);
 		void SetAnimation(short animationIndex, short animationLength);

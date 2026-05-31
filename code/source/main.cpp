@@ -7,6 +7,7 @@
 #include "Data.hpp"
 #include "Sprite.hpp"
 #include "Entity.hpp"
+#include "LevelManager.hpp"
 
 using namespace Halib;
 
@@ -26,6 +27,9 @@ int main()
 	Hall::Init();
 	System::Init();
 	Time::SetTargetFramerate(60);
+
+	LevelManager LevelManager{};
+	LevelManager.Init();
 
 	auto image = Data::LoadImage(std::string("assets/byterLogo.bmp"));
 	auto image75 = Data::LoadImage(std::string("assets/byterLogo75.bmp"));
@@ -85,7 +89,7 @@ int main()
 		spriteShroom->SetScale(scale);
 		//RENDER CODE
 		System::Clear(Data::CreateColor(3, 3, 3, 1));
-		//System::Render(image, 100, 60, scale, scale);
+		LevelManager.Render();
 		System::Render(entity);
 		System::Render(entityShroom);
 		//RENDER CODE END
