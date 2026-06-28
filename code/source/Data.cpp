@@ -4,37 +4,25 @@
 
 namespace Halib::Data
 {
-	std::shared_ptr<Image> LoadImage(std::string path)
+	std::shared_ptr<Image> LoadImage(const char* path)
 	{
 		bmpread_t bmp;
-		int result = bmpread(path.c_str(), BMPREAD_TOP_DOWN | BMPREAD_ANY_SIZE | BMPREAD_ALPHA | BMPREAD_BYTE_ALIGN, &bmp);
+		int result = bmpread(path, BMPREAD_TOP_DOWN | BMPREAD_ANY_SIZE | BMPREAD_ALPHA | BMPREAD_BYTE_ALIGN, &bmp);
 		if(!result)
 		{
 			std::cerr << "COULD NOT LOAD ASSET \"" << path << "\". Idk why, though..." << std::endl;
 		}
-		std::unique_ptr<Hall::Color[]> data((Hall::Color*)bmp.data);
+		Hall::Color* imgdata = new Hall::Color[bmp.width * bmp.height];
+		memcpy(imgdata, bmp.data, bmp.width * bmp.height * sizeof(Hall::Color));
+		std::unique_ptr<Hall::Color[]> data(imgdata);
 		
 		std::shared_ptr<Image> image = std::make_shared<Image>();
 		image->SetData(std::move(data));
-		image->size.x = bmp.width;
-		image->size.y = bmp.height;
-		//bmpread_free(&bmp); //We don't call free anymore because that would delete the loaded data
+		image->width = bmp.width;
+		image->height = bmp.height;
+		bmpread_free(&bmp);
 
 		return image;
-	}
-
-	std::shared_ptr<Simage> LoadSimage(std::string path, std::string path2)
-	{
-		if(path2 == "")
-		{
-			path2 = path.replace(path.find_first_of(".bmp"), std::string::npos, "75.bmp");
-		}
-
-		std::shared_ptr<Simage> simage = std::make_shared<Simage>();
-		simage->image = LoadImage(path.c_str());
-		simage->image75 = LoadImage(path2.c_str());
-
-		return simage;
 	}
 
 	Hall::Color CreateColor(char red, char green, char blue, bool alpha)
